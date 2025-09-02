@@ -1,170 +1,304 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rose Ann's Personal Info</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-html, body {
-  height: 100%;
-  font-family: "Arial", sans-serif;
-}
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.7;
+      color: #333;
+      background-color: #f5f5f5;
+      overflow: hidden; /* Prevent scrolling */
+    }
 
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+      z-index: 1000;
+    }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+    header h2 {
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
 
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
 
-.header {
-  background-color: #b16366;
-  color: #ffffff;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.header img {
-  height: 80px;
-}
+    header nav a:hover {
+      color: #ff9800;
+    }
 
+    section {
+      display: none; /* Hide all sections by default */
+      height: 100vh;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
 
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-[class*="col-"] {
-  float: left;
-  padding: 15px;
-  width: 100%;
-}
-@media only screen and (min-width: 768px) {
-  .col-3 { width: 25%; }
-  .col-6 { width: 50%; }
-}
+    section.active {
+      display: flex; /* Show only the active section */
+    }
 
+    .content-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
 
-.menu ul {
-  list-style-type: none;
-}
-.menu li {
-  padding: 10px;
-  margin-bottom: 7px;
-  background-color: #c98888;
-  color: #ffffff;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: 0.3s;
-}
-.menu li:hover {
-  background-color: #a86464;
-}
-.menu li.active {
-  background-color: #a86464;
-  font-weight: bold;
-}
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 3rem;
+    }
 
+    p {
+      font-size: 1.4rem;
+    }
 
-#content {
-  flex: 1;
-}
+    .checklist-box {
+      background: #f0f0f0;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      max-width: 400px;
+      margin: 20px auto 0;
+      text-align: left;
+    }
 
+    .checklist-box ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-.footer {
-  background-color: #c98888;
-  color: #ffffff;
-  text-align: center;
-  font-size: 12px;
-  padding: 15px;
-  margin-top: auto; 
-}
-</style>
+    .checklist-box li {
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .profile-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      text-align: left;
+    }
+
+    .profile-container img {
+      border-radius: 50%;
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .gallery-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .gallery-container img {
+      width: 250px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery-container img:hover {
+      transform: scale(1.05);
+    }
+
+    .about-image {
+      width: 550px;
+      max-width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #333;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width: 900px) {
+      .profile-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .gallery-container img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+      }
+      header nav a {
+        display: block;
+        margin: 10px 0;
+      }
+      h1 { font-size: 2.2rem; }
+      p { font-size: 1.2rem; }
+      .checklist-box li { font-size: 1.1rem; }
+      .about-image { width: 100%; margin-bottom: 15px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>Ilocos Sur Polytechnic State College</h1>
-  <img src="images/logo.png" alt="ISPSC Logo">
-</div>
+  <header>
+    <h2>Rose Ann's Info</h2>
+    <nav>
+      <a data-target="home">Home</a>
+      <a data-target="profile">Profile</a>
+      <a data-target="gallery">Gallery</a>
+      <a data-target="about">About</a>
+    </nav>
+  </header>
 
-<div class="row">
-  <div class="col-3 menu">
-    <ul>
-      <li onclick="showContent('history', this)" class="active">History</li>
-      <li onclick="showContent('vision', this)">Vision</li>
-      <li onclick="showContent('mission', this)">Mission</li>
-      <li onclick="showContent('values', this)">Core Values</li>
-      <li onclick="showContent('goals', this)">Goals & Objectives</li>
-    </ul>
+  <section id="home" class="active">
+    <div class="content-box">
+      <h1>Track your tasks</h1>
+      <div class="checklist-box">
+        <ul>
+          <li><input type="checkbox" id="presentation"><label for="presentation">Presentation</label></li>
+          <li><input type="checkbox" id="quiz"><label for="quiz">Quiz</label></li>
+          <li><input type="checkbox" id="clean"><label for="clean">Clean</label></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="profile">
+    <div class="content-box">
+      <h1>My Profile</h1>
+      <div class="profile-container">
+        <div>
+          <img src="images/picture5.jpg" alt="Profile Picture">
+        </div>
+        <div>
+          <p><strong>Full Name:</strong> Rose Ann E. Cabang<br>
+             <strong>Age:</strong> 20<br>
+             <strong>Gender:</strong> Female<br>
+             <strong>Date of Birth:</strong> July, 10' 2005<br>
+             <strong>Address:</strong> Codoog Narvacan Ilocos Sur<br>
+             <strong>Status:</strong> Single</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="content-box">
+      <h1>Gallery</h1>
+      <div class="gallery-container">
+        <img src="images/picture1.jpg" alt="Photo1">
+        <img src="images/picture2.jpg" alt="Photo2">
+        <img src="images/picture3.jpg" alt="Photo3">
+        <img src="images/picture4.jpg" alt="Photo4">
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="content-box" style="max-width:700px;">
+      <h1>About Me</h1>
+      <img class="about-image" src="images/picture6.jpg" alt="About Me Image">
+      <p>Hi I'm Roseann, my favorite foods are: chicken joy, adobong baboy, sinigang na baboy, inihaw na liempo, paksiw na tilapia. My favorite hobby is dancing.</p>
+    </div>
+  </section>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Expanded Image">
   </div>
+  
+  <script>
+    // Tab navigation
+    const navLinks = document.querySelectorAll('header nav a');
+    const sections = document.querySelectorAll('section');
 
-  <div class="col-6" id="content">
-    <h1>History</h1>
-    <p>
-      ISPSC is a comprehensive six-campus institution of higher learning mandated to give professional and technical training both in the undergraduate and graduate levels in the fields of economics, agriculture, fishery, trade, home industry, engineering, education, forest research and conservation, management, finance, accounting and business administration, public administration and other fields as may be relevant, besides providing for the promotion of scientific and technological researches which the College deems necessary in carrying out its objectives. The main campus is situated in Santa Maria, Ilocos Sur and the five other campuses are strategically located in Candon City and the municipalities of Narvacan, Santiago, Tagudin, Cervantes, all in the second district of Ilocos Sur.
-    </p>
-  </div>
-</div>
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const target = link.getAttribute('data-target');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
 
-<div class="footer">
-  <p>ISPSC- STA. MARIA 2025.</p>
-</div>
+    // Lightbox for gallery
+    const galleryImages = document.querySelectorAll('.gallery-container img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
 
-<script>
-function showContent(section, element) {
-  let items = document.querySelectorAll(".menu li");
-  items.forEach(li => li.classList.remove("active"));
-  element.classList.add("active");
+    galleryImages.forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+      });
+    });
 
-  let content = document.getElementById("content");
-
-  if (section === "history") {
-    content.innerHTML = `
-      <h1>History</h1>
-      <p>ISPSC is a comprehensive six-campus institution of higher learning mandated to give professional and technical training both in the undergraduate and graduate levels in the fields of economics, agriculture, fishery, trade, home industry, engineering, education, forest research and conservation, management, finance, accounting and business administration, public administration and other fields as may be relevant, besides providing for the promotion of scientific and technological researches which the College deems necessary in carrying out its objectives. The main campus is situated in Santa Maria, Ilocos Sur and the five other campuses are strategically located in Candon City and the municipalities of Narvacan, Santiago, Tagudin, Cervantes, all in the second district of Ilocos Sur.</p>
-    `;
-  } else if (section === "vision") {
-    content.innerHTML = `
-      <h1>Vision</h1>
-      <p>A vibrant and nurturing Polytechnic Service College for transforming lives and communities.</p>
-    `;
-  } else if (section === "mission") {
-    content.innerHTML = `
-      <h1>Mission</h1>
-      <p>To improve the lives of people and communities through quality instruction, innovations, productivity initiatives, environment and industry-feasible technologies, resource mobilization, and transformative outreach programs and services.</p>
-    `;
-  } else if (section === "values") {
-    content.innerHTML = `
-      <h1>Core Values</h1>
-      <ul>
-        <li>Integrity</li>
-        <li>Service</li>
-        <li>Professionalism</li>
-        <li>Social Responsibility</li>
-        <li>Commitment to Excellence</li>
-      </ul>
-    `;
-  } else if (section === "goals") {
-    content.innerHTML = `
-      <h1>Goals & Objectives</h1>
-      <ul>
-        <li>To be the source of competent and employable technical and professional graduates for domestic and foreign markets through quality instruction;</li>
-        <li>To disseminate products of researches (matured and environment-friendly technologies) to entrepreneurs, farmers and fisher folks to improve/increase their income;</li>
-        <li>To help alleviate poverty and improve the quality of the lives of poor and marginalized families in the service areas through relevant extension services;</li>
-        <li>To strengthen production and generate more income to support research, instruction & extension activities;</li>
-        <li>To improve physical facilities and building structures in all of the campuses.</li>
-      </ul>
-    `;
-  }
-}
-</script>
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+    }
+  </script>
 
 </body>
 </html>
